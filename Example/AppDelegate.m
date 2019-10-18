@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import <EJPropertySDK/EJPropertySDK.h>
 @interface AppDelegate ()
 
 @end
@@ -17,6 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+     [EJPropertyKit initWithChannelId:@"120010bb3d3a8600" themeColor:@"#00B9AE"];
     return YES;
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import <EJPropertySDK/EJPropertySDK.h>
 @interface ViewController ()
 
 @end
@@ -18,6 +18,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
-
+- (IBAction)toNext:(id)sender {
+ 
+    [EJReportRepairManager pushToReportRepairModuleWithAccessToken:@"NTYwNkQ4N0ZBQkNDOEIwMjhCNjEwMUI5OUQ0RjAzQUJCNkI2MDY2RTZCMDQxN0ZCRUVDNzYyRTI3Q0ZENUVGQg==" communityId:@"222222"];
+}
 
 @end
