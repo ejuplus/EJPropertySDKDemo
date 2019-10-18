@@ -16,9 +16,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    
+     
+     //ChannelId 渠道Id 必填，themeColor主题色，是非必填
      [EJPropertyKit initWithChannelId:@"120010bb3d3a8600" themeColor:@"#00B9AE"];
+    
     return YES;
 }
 
