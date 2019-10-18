@@ -22,10 +22,14 @@
 ```
 - (IBAction)toNext:(id)sender {
 
-   //accessToken 接入方的token   communityId 接入方的小区id
+   //accessToken 接入方的token   communityId 接入方的小区id  loginInvalid 登录过期方法回调
    
     [EJReportRepairManager pushToReportRepairModuleWithAccessToken:@"NTYwNkQ4N0ZBQkNDOEIwMjhCNjEwMUI5OUQ0RjAzQUJCNkI2MDY2RTZCMDQxN0ZCRUVDNzYyRTI3Q0ZENUVGQg==" 
-                                                       communityId:@"222222"];
+                                                       communityId:@"222222"
+                                                       loginInvalid:^{
+                                                      //处理登录过期
+        
+    }];];
 
 }
 ```
