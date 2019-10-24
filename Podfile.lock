@@ -28,7 +28,7 @@ PODS:
   - SDWebImage/Core (5.2.3)
 
 DEPENDENCIES:
-  - EJPropertySDK (from `/Users/faneyoung/Desktop/EJUPropertySDKTestLib`)
+  - EJPropertySDK (from `https://github.com/fanefane/spec.git`)
 
 SPEC REPOS:
   trunk:
@@ -40,7 +40,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   EJPropertySDK:
-    :path: "/Users/faneyoung/Desktop/EJUPropertySDKTestLib"
+    :git: https://github.com/fanefane/spec.git
+
+CHECKOUT OPTIONS:
+  EJPropertySDK:
+    :commit: 4cbfb9e9f98731344af9ec6155eac6b5f331bc21
+    :git: https://github.com/fanefane/spec.git
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -50,6 +55,6 @@ SPEC CHECKSUMS:
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
   SDWebImage: 46a7f73228f84ce80990c786e4372cf4db5875ce
 
-PODFILE CHECKSUM: 5dad1e921c084c543fbf9a42904a4d75c94b0cc2
+PODFILE CHECKSUM: 22fc61c7219834e4bfd994fc69090ad959b88daa
 
 COCOAPODS: 1.8.4

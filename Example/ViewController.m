@@ -9,15 +9,8 @@
 #import "ViewController.h"
 #import <EJPropertySDK/EJPropertySDK.h>
 
-static NSString *TestBaseUrl = @" http://39.98.98.227";
-static NSString *TestLoginPath = @"/v2/corp_auth";
-static NSString *TestUserDetailPath = @"";
-
 @interface ViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *phoneTf;
-@property (weak, nonatomic) IBOutlet UITextField *pwdTf;
 @property (weak, nonatomic) IBOutlet UITextField *tokenTf;
-
 @property (weak, nonatomic) IBOutlet UILabel *userLab;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
@@ -97,19 +90,6 @@ static NSString *TestUserDetailPath = @"";
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (IBAction)loginBtnClick:(id)sender {
-    if (self.phoneTf.text.length < 3 || self.pwdTf.text.length < 1) {
-        return;
-    }
-    
-//    NSMutableDictionary *dic = @{}.mutableCopy;
-//    [dic setObject:self.phoneTf.text forKey:@"account"];
-//    [dic setObject:self.pwdTf.text forKey:@"password"];
-    NSString *url = [NSString stringWithFormat:@"%@?account=%@&password=%@",TestLoginPath,self.phoneTf.text,self.pwdTf.text];
-    [self requestWithPath:url params:nil];
-    
-}
-
 - (IBAction)toNext:(id)sender {
     
     NSString *key = self.userLab.text;
@@ -126,6 +106,7 @@ static NSString *TestUserDetailPath = @"";
         }
     }];
 
+
     [EJReportRepairManager pushToReportRepairModuleWithAccessToken:self.tokenTf.text memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2" loginInvalid:^{
          //处理登录过期
             NSLog(@"----------登录过期");
@@ -133,55 +114,5 @@ static NSString *TestUserDetailPath = @"";
 
 }
 
-#pragma mark - request -
-
--(void)requestWithPath:(NSString*)path params:(NSDictionary*)pms{
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@",TestBaseUrl,path];
-//    NSMutableURLRequest *request = [self postReqeustJsonFormatWithURL:urlStr params:@{@"loginPhone":@"18679311106",@"password":@"11111111"}];
-    NSMutableURLRequest *request = [self postReqeustJsonFormatWithURL:urlStr params:pms];
-
-   NSURLSession *session=[NSURLSession sharedSession];
-
-    NSURLSessionDataTask *dataTask=[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            return ;
-        }
-       NSLog(@"%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
-       NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"----------%@",result);
-        if (!result || ![result isKindOfClass:NSDictionary.class]) {
-            
-            return ;
-        }
-        
-        
-    
-   }];
-
-    [dataTask resume];
-}
-
-- (NSMutableURLRequest *)postReqeustJsonFormatWithURL:(NSString *)url params:(NSDictionary *)paramDic{
-    NSMutableURLRequest *rq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    rq.HTTPMethod = @"POST";
-    rq.timeoutInterval = 30;
-    
-//    if ([NSJSONSerialization isValidJSONObject:paramDic]) {
-//        NSData *
-//        postDatas = [NSJSONSerialization dataWithJSONObject:paramDic options:NSJSONWritingPrettyPrinted error:nil];
-//        NSString *str = [[NSString alloc] initWithData:postDatas encoding:NSUTF8StringEncoding];
-//        str = [str stringByReplacingOccurrencesOfString:@" " withString:@""];
-//        str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-//        str = [str stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-//        [rq setHTTPBody:[str dataUsingEncoding:NSUTF8StringEncoding]];
-//    }
-    
-    [rq setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    //添加通用header 以及 数据签名
-//    [SHCoreManager addCommonHeaderForRequest:rq];
-    
-    return rq;
-}
 
 @end

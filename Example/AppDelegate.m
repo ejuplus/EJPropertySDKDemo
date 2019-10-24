@@ -19,8 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
-     //ChannelId 渠道Id 必填，themeColor主题色，是非必填
-     [EJPropertyKit initWithChannelId:@"120010bb3d3a8600" themeColor:@"#00B9AE"];
+     //ChannelId 渠道Id 选填，themeColor主题色，是非必填
+     [EJPropertyKit initWithChannelId:@"" themeColor:@"#00B9AE"];
     
     return YES;
 }
