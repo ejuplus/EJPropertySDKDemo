@@ -8,6 +8,7 @@ target 'Example' do
   # Pods for Example
 #  pod 'EJPropertySDK', :git=>'https://github.com/fanefane/spec.git'
   pod 'EjuHKSDK', :git => 'https://github.com/fanefane/ejuspec.git'
+#  pod 'EjuHKSDK', :path => '/Users/faneyoung/Desktop/test/EjuHKSDK_static'
 
 
 end

@@ -115,12 +115,19 @@
         }
     }];
 
+    
+    NSString *token = self.tokenTf.text;
 
+//    mId = @"12000ebb10eba600";
+//     token = @"Q0YzMzgyMkM5MDZDNTI1RUMyRjNCQjQ5NjcxRTI4OUQzMjQ5MzUzMjg2QUYxMURGMDcyQzE5OTlBREY3NUFBNQ==";
+
+    
+    
     if (sender.tag == 0) {
-        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeReport accessToken:self.tokenTf.text memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
+        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeReport accessToken:token memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
     }
     else if (sender.tag == 1){
-        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeComplaint accessToken:self.tokenTf.text memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
+        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeComplaint accessToken:token memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
     }
     
 
