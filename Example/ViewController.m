@@ -7,12 +7,12 @@
 //
 
 #import "ViewController.h"
-#import <EJPropertySDK/EJPropertySDK.h>
+//#import <EJPropertySDK/EJPropertySDK.h>
+#import <EjuHKSDK/EjuHKManager.h>
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *tokenTf;
 @property (weak, nonatomic) IBOutlet UILabel *userLab;
-@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 
 @property (nonatomic, strong) NSArray *users;
 
@@ -90,10 +90,19 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (IBAction)toNext:(id)sender {
+- (IBAction)toNext:(UIButton*)sender {
     
     NSString *key = self.userLab.text;
     if (!key || key.length < 1) {
+        return;
+    }
+    
+    if (self.tokenTf.text.length < 1) {
+        [UIView animateWithDuration:0.25 animations:^{
+            self.tokenTf.backgroundColor = UIColor.redColor;
+        } completion:^(BOOL finished) {
+            self.tokenTf.backgroundColor = UIColor.whiteColor;
+        }];
         return;
     }
 
@@ -107,10 +116,13 @@
     }];
 
 
-    [EJReportRepairManager pushToReportRepairModuleWithAccessToken:self.tokenTf.text memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2" loginInvalid:^{
-         //处理登录过期
-            NSLog(@"----------登录过期");
-     }];
+    if (sender.tag == 0) {
+        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeReport accessToken:self.tokenTf.text memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
+    }
+    else if (sender.tag == 1){
+        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeComplaint accessToken:self.tokenTf.text memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
+    }
+    
 
 }
 

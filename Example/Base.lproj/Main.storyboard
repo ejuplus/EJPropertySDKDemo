@@ -100,38 +100,71 @@
                                     <outletCollection property="gestureRecognizers" destination="83S-53-6aQ" appends="YES" id="NXh-Pi-AUm"/>
                                 </connections>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tE4-US-PIx">
-                                <rect key="frame" x="157" y="488" width="100" height="40"/>
-                                <color key="backgroundColor" red="0.24313725489999999" green="0.56078431370000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="HP3-Y2-hig">
+                                <rect key="frame" x="132" y="508.5" width="150" height="95"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tE4-US-PIx">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
+                                        <color key="backgroundColor" red="0.24313725489999999" green="0.56078431370000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="NzS-HI-jeY"/>
+                                        </constraints>
+                                        <state key="normal" title="报事报修">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="toNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5SO-eW-G3U"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qkI-L5-Brg" userLabel="sepView">
+                                        <rect key="frame" x="0.0" y="40" width="150" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="OyA-Vs-t47"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5x-TM-hZ9">
+                                        <rect key="frame" x="0.0" y="55" width="150" height="40"/>
+                                        <color key="backgroundColor" red="0.24313725489999999" green="0.56078431370000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="fcY-Kc-9gd"/>
+                                        </constraints>
+                                        <state key="normal" title="投诉表扬">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="toNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cft-9u-Ipe"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="NzS-HI-jeY"/>
-                                    <constraint firstAttribute="width" constant="100" id="TtC-9a-v7O"/>
+                                    <constraint firstAttribute="width" constant="150" id="Hem-84-FSb"/>
                                 </constraints>
-                                <state key="normal" title="报事报修">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="toNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5SO-eW-G3U"/>
-                                </connections>
-                            </button>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="HP3-Y2-hig" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2L2-Z5-b1L"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xxu-bS-VbU" secondAttribute="trailing" constant="15" id="J2b-Kq-c0D"/>
+                            <constraint firstItem="HP3-Y2-hig" firstAttribute="top" secondItem="xxu-bS-VbU" secondAttribute="bottom" constant="50" id="VCK-be-wxR"/>
                             <constraint firstItem="xxu-bS-VbU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-62" id="WmY-F8-uTd"/>
-                            <constraint firstItem="tE4-US-PIx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ccO-oe-sJJ"/>
                             <constraint firstItem="xxu-bS-VbU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="iJM-B1-sFC"/>
-                            <constraint firstItem="tE4-US-PIx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="60" id="mht-YF-Mfh"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="nextBtn" destination="tE4-US-PIx" id="7fj-c9-fnl"/>
                         <outlet property="tokenTf" destination="Q6g-9j-Reh" id="zlQ-nt-mcx"/>
                         <outlet property="userLab" destination="qlG-xc-cun" id="RJn-pt-pyu"/>
                     </connections>

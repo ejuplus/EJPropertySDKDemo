@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import <EJPropertySDK/EJPropertySDK.h>
+//#import <EJPropertySDK/EJPropertySDK.h>
+#import <EjuHKSDK/EjuHKManager.h>
 
 @interface AppDelegate ()
 
@@ -20,7 +21,11 @@
     
     
      //ChannelId 渠道Id 选填，themeColor主题色，是非必填
-     [EJPropertyKit initWithChannelId:@"" themeColor:@"#00B9AE"];
+//     [EJPropertyKit initWithChannelId:@"" themeColor:@"#00B9AE"];
+    [EjuHKManager globalConfigWithChannelId:@"" themeColor:@"#00B9AE"];
+    [EjuHKManager loginInvalid:^{
+            NSLog(@"----------登录过期回调");
+    }];
     
     return YES;
 }
