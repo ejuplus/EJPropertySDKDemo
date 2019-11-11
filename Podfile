@@ -6,9 +6,8 @@ target 'Example' do
   use_frameworks!
   
   # Pods for Example
-#  pod 'EJPropertySDK', :git=>'https://github.com/fanefane/spec.git'
+#  pod 'EjuHKSDK', :path => '/Users/faneyoung/demoGit/eju-housekeeper/ios-housekeeper/Product'
   pod 'EjuHKSDK', :git => 'https://github.com/fanefane/ejuspec.git'
-#  pod 'EjuHKSDK', :path => '/Users/faneyoung/Desktop/test/EjuHKSDK_static'
 
 
 end

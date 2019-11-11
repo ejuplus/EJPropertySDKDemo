@@ -9,12 +9,16 @@
 #import "ViewController.h"
 //#import <EJPropertySDK/EJPropertySDK.h>
 #import <EjuHKSDK/EjuHKManager.h>
+#import "UserInfo.h"
+
+#define ThirdLoginUrl  @"http://39.98.98.227/v2/corp_auth"
 
 @interface ViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *tokenTf;
-@property (weak, nonatomic) IBOutlet UILabel *userLab;
+@property (weak, nonatomic) IBOutlet UITextField *userTf;
+@property (weak, nonatomic) IBOutlet UITextField *pwdTf;
+@property (weak, nonatomic) IBOutlet UILabel *msgLab;
 
-@property (nonatomic, strong) NSArray *users;
+@property (weak, nonatomic) IBOutlet UIStackView *stackView;
 
 @end
 
@@ -23,113 +27,167 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"三方登录";
+    
+    [EjuHKManager loginInvalid:^{
+            NSLog(@"----------登录过期回调");
+//        [self clearLocalUserWithMsg:@"登录过期"];
+    }];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] objectForKey:@"Historyuserkey"];
+    if (dic && [dic isKindOfClass:NSDictionary.class] && dic.count > 1) {
+        self.userTf.text = [dic objectForKey:@"account"];
+        self.pwdTf.text = [dic objectForKey:@"password"];
+    }
     
-    NSString *key = [[NSUserDefaults standardUserDefaults] objectForKey:@"TestUserChangeKey"];
-    if (!key || ![key isKindOfClass:NSString.class]) {
-        NSDictionary *dic = self.users[0];
-        self.userLab.text = [dic objectForKey:@"account"];
-    }
-    else{
-        __block BOOL hasUser = NO;
-        [self.users enumerateObjectsUsingBlock:^(NSDictionary*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj.allKeys.firstObject isEqualToString:key]) {
-                self.userLab.text = [obj objectForKey:@"account"];
-                hasUser = YES;
-                *stop = YES;
-            }
-        }];
-        
-//        if (!hasUser) {
-//            NSDictionary *dic = self.users[0];
-//
-//            self.userLab.text = [dic objectForKey:@"account"];
-//            [[NSUserDefaults standardUserDefaults] setObject:self.userLab.text forKey:@"TestUserChangeKey"];
-//        }
-    }
+    self.stackView.hidden = !dic;
 
     
 }
 
-- (NSArray *)users{
-    if (!_users) {
-        _users = @[
-            @{@"account":@"18814188114",@"mId":@"12000ebb10ef8600"},
-            @{@"account":@"18814188118",@"mId":@"120010bb10f30000"},
-            @{@"account":@"18814188119",@"mId":@"120010bb113a7400"},
-            @{@"account":@"13312888452",@"mId":@"12000ebb1acc8200"},
-            @{@"account":@"18854654578",@"mId":@"12000ebb1b697400"},
-            @{@"account":@"18814188106",@"mId":@"12000ebb10eba600"},
-        ];
-    }
-    
-    return _users;
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
 }
 
-- (IBAction)changeUserAction:(id)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"切换账号" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+#pragma mark - actions -
+
+- (IBAction)loginBtnClick:(id)sender {
+    [self clearLocalUserWithMsg:@""];
     
-    [self.users enumerateObjectsUsingBlock:^(NSDictionary*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        UIAlertAction *action = [UIAlertAction actionWithTitle:[obj objectForKey:@"account"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [[NSUserDefaults standardUserDefaults] setObject:action.title forKey:@"TestUserChangeKey"];
-            self.userLab.text = action.title;
+    if (self.userTf.text.length < 1) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.userTf.backgroundColor = UIColor.redColor;
+        } completion:^(BOOL finished) {
+            self.userTf.backgroundColor = UIColor.whiteColor;
         }];
-        [alert addAction:action];
-    }];
+        return;
+    }
     
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [alert dismissViewControllerAnimated:YES completion:nil];
-    }];
-    [alert addAction:cancel];
+    if (self.pwdTf.text.length < 1) {
+        [UIView animateWithDuration:.3 animations:^{
+            self.pwdTf.backgroundColor = UIColor.redColor;
+        } completion:^(BOOL finished) {
+            self.pwdTf.backgroundColor = UIColor.whiteColor;
+        }];
+
+        return;
+    }
     
-    
-    [self presentViewController:alert animated:YES completion:nil];
+    [self.view endEditing:YES];
+
+    [self requestWith:[self postReqeustJsonFormatWithURL:ThirdLoginUrl params:@{@"account":self.userTf.text,@"password":self.pwdTf.text}]];
+}
+
+#pragma mark - note -
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.view endEditing:YES];
+
+    return YES;
 }
 
 - (IBAction)toNext:(UIButton*)sender {
     
-    NSString *key = self.userLab.text;
-    if (!key || key.length < 1) {
-        return;
-    }
-    
-    if (self.tokenTf.text.length < 1) {
-        [UIView animateWithDuration:0.25 animations:^{
-            self.tokenTf.backgroundColor = UIColor.redColor;
-        } completion:^(BOOL finished) {
-            self.tokenTf.backgroundColor = UIColor.whiteColor;
-        }];
-        return;
-    }
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] objectForKey:@"Historyuserkey"];
+    UserInfo *user = [UserInfo initWithDictionary:dic];
 
-    __block NSString *mId = nil;
-    [self.users enumerateObjectsUsingBlock:^(NSDictionary*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *account = [obj objectForKey:@"account"];
-        if ([account isEqualToString:key]) {
-            mId = [obj objectForKey:@"mId"];
-            *stop = YES;
-        }
-    }];
-
-    
-    NSString *token = self.tokenTf.text;
-
-//    mId = @"12000ebb10eba600";
-//     token = @"Q0YzMzgyMkM5MDZDNTI1RUMyRjNCQjQ5NjcxRTI4OUQzMjQ5MzUzMjg2QUYxMURGMDcyQzE5OTlBREY3NUFBNQ==";
-
-    
-    
     if (sender.tag == 0) {
-        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeReport accessToken:token memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
+        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeReport accessToken:user.access_token memberId:user.member_id communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
     }
     else if (sender.tag == 1){
-        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeComplaint accessToken:token memberId:mId communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
+        [EjuHKManager pushToModuleWithType:EjuHKModuleTypeComplaint accessToken:user.access_token memberId:user.member_id communityId:@"65a3a176b6ab8c3d57cce31038e78ba2"];
     }
     
+
+}
+
+#pragma mark - request -
+
+- (NSMutableURLRequest *)postReqeustJsonFormatWithURL:(NSString *)url params:(NSDictionary *)paramDic{
+    NSMutableURLRequest *rq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    rq.HTTPMethod = @"POST";
+    rq.timeoutInterval = 10.0;
+    
+    if ([NSJSONSerialization isValidJSONObject:paramDic]) {
+        NSData *
+        postDatas = [NSJSONSerialization dataWithJSONObject:paramDic options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc] initWithData:postDatas encoding:NSUTF8StringEncoding];
+        str = [str stringByReplacingOccurrencesOfString:@" " withString:@""];
+        str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        str = [str stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+        [rq setHTTPBody:[str dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    [rq setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    return rq;
+}
+
+- (void)requestWith:(NSMutableURLRequest *)request
+{
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+
+    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        if (data==nil) {
+            [self clearLocalUserWithMsg:@"登录失败"];
+            return ;
+        }
+        
+        NSError *err;
+        NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&err];
+        if (err || !resultDic ||
+            ![resultDic isKindOfClass:NSDictionary.class] ||
+            resultDic.count < 1) {
+            [self clearLocalUserWithMsg:@"登录失败."];
+            
+            return;
+        }
+        
+        NSDictionary *errMsg = [resultDic objectForKey:@"error"];
+        if (errMsg && [errMsg isKindOfClass:NSDictionary.class] && errMsg.count > 0) {
+            [self clearLocalUserWithMsg:[errMsg objectForKey:@"msg"]];
+            return;
+        }
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:resultDic];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [dic addEntriesFromDictionary:@{@"account":self.userTf.text,@"password":self.pwdTf.text}];
+            [[NSUserDefaults standardUserDefaults] setObject:dic.copy forKey:@"Historyuserkey"];
+            self.stackView.hidden = NO;
+        });
+    }] resume] ;
+}
+
+#pragma mark - help methos -
+- (void)removeNote{
+    self.msgLab.text = @"";
+}
+- (void)clearLocalUserWithMsg:(NSString*)msg{
+    
+    if ([NSThread isMainThread]) {
+        self.stackView.hidden = YES;
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Historyuserkey"];
+        
+        if (msg.length > 0) {
+            self.msgLab.text = msg;
+            [self performSelector:@selector(removeNote) withObject:self.msgLab afterDelay:1];
+        }
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.stackView.hidden = YES;
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Historyuserkey"];
+            
+            if (msg.length > 0) {
+                self.msgLab.text = msg;
+                [self performSelector:@selector(removeNote) withObject:self.msgLab afterDelay:1];
+            }
+        });
+    }
 
 }
 
